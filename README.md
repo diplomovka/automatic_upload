@@ -4,7 +4,7 @@
 * pip install -r requirements.txt
 * python ./automatic_upload.py <required_arguments>
 
-## Command line arguments explanations
+## Command line arguments explained
 * --url/-u = url on which will be the data send
 * --file/-f = relative path to file, which will be send to the url
 * --directory/-d = relativie path to directory with files, which will be send to the url
