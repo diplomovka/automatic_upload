@@ -43,12 +43,23 @@ file_field_name = 'file' if data_type == 'unstructured' else 'sql_dump'
 
 
 if args.file:
-    send_file(args.file, url, file_field_name, data)
+    file_relative_path = args.file
 
-elif args.directory:    
-    files_names = os.listdir(args.directory)
-    for file_name in files_names:
-        send_file(file_name, url, file_field_name, data)
+    if os.path.exists(file_relative_path):
+        send_file(file_relative_path, url, file_field_name, data)
+    else:
+        print(f'File: {file_relative_path} doesn\'t exists.')
+
+elif args.directory:
+    directory = args.directory
+
+    if not os.path.exists(directory):
+        print(f'Directory: {directory} doesn\'t exists.')
+    else:
+        files_names = os.listdir(directory)
+        for file_name in files_names[:10]:
+            file_relative_path = f'{directory}/{file_name}'
+            send_file(file_relative_path, url, file_field_name, data)
 
 else:
     print('Provide either relative path to file or directory, which contains files for upload. \n' +
