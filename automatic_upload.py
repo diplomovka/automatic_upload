@@ -3,6 +3,7 @@ import requests
 import os
 import io
 import uuid
+from base64 import b64encode
 
 # 'http://localhost:5001/file/upload' or 'http://localhost:5002/structured-data/upload'
 
@@ -64,15 +65,15 @@ elif args.directory:
         print(f'Directory: {directory} doesn\'t exists.')
     else:
         files_names = os.listdir(directory)
-        for file_name in files_names[:10]:
-            file_relative_path = f'{directory}/{file_name}'
+        for file_name in files_names:
+            file_relative_path = f'{directory}{file_name}'
             send_file(file_relative_path, url, file_field_name, data)
 
 elif args.simulator and args.type == 'unstructured':
     for i in range(args.simulator_rounds):
         file_name = f'{uuid.uuid4()}.txt'
         # generate random bytes and convert them to in memory file
-        generated_file = io.BytesIO(os.urandom(args.simulator_data_size))
+        generated_file = b64encode(io.BytesIO(os.urandom(args.simulator_data_size)))
         generated_file.name = file_name
 
         files = { 'file': generated_file }
