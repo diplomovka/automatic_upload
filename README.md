@@ -22,4 +22,4 @@ Running [infrastructure](https://github.com/diplomovka/infrastructure) in Docker
 python ./automatic_upload.py -u http://localhost:5002/structured-data/upload -f test.sql -t structured
 
 ### Unstructured data
-python ./automatic_upload.py -u http://localhost:5001/file/upload -f test.txt -t unstructured
+python .\automatic_upload.py -u http://localhost:5000/file/upload -d .\test_files\randomly_generated\first_batch\ -t unstructured -e test1 -ha sha256 

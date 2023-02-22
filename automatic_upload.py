@@ -7,6 +7,16 @@ from base64 import b64encode
 
 # 'http://localhost:5001/file/upload' or 'http://localhost:5002/structured-data/upload'
 
+def create_request_body(args):
+    return {
+        'min_size': args.min_size,
+        'avg_size': args.avg_size,
+        'max_size': args.max_size,
+        'hash_function': args.hash_function,
+        'experiment_name': args.experiment_name
+    }
+
+
 def send_file(file_name, url, file_field_name, data):
     # TODO: find out if sql dump can be send as 'rb'
     f = open(file_name, 'rb')
@@ -26,6 +36,9 @@ parser.add_argument('--url', '-u', required=True, help='url on which will be the
 parser.add_argument('--file', '-f', default=None, help='path to the file, which will be uploaded on the url')
 parser.add_argument('--directory', '-d', default=None,
     help='path to the directory with files, which will be uploaded on the url')
+parser.add_argument('--experiment_name', '-e', required=True, help='provide any experiment name')
+parser.add_argument('--hash_function', '-ha', required=True, choices=['sha256', 'md5', 'sha1'],
+    help='provde any valid hash function name (sha256, sha1, md5)')
 parser.add_argument('--type', '-t', required=True, choices=['structured', 'unstructured'],
     help='type of the data, which will be uploade (structured or unstructured)')
 parser.add_argument('--min_size', '-m', type=int, default=64,
@@ -46,8 +59,7 @@ args = parser.parse_args()
 url = args.url
 data_type = args.type
 
-data = { 'min_size': args.min_size, 'avg_size': args.avg_size, 'max_size': args.max_size } \
-    if data_type == 'unstructured' else {}
+data = create_request_body(args) if data_type == 'unstructured' else {}
 file_field_name = 'file' if data_type == 'unstructured' else 'sql_dump'
 
 if args.file:
