@@ -24,9 +24,10 @@ def send_file(file_name, url, file_field_name, data):
 
     response = requests.post(url, files=files, data=data)
 
-    print(f'Response status code: {response.status_code} for file: {file_name}')
-    message = response.json()['message']
-    print(f'Response message: {message}')
+    if response.status_code != 200:
+        print(f'Response status code: {response.status_code} for file: {file_name}')
+        message = response.json()['message']
+        print(f'Response message: {message}')
 
     f.close()
 
@@ -91,9 +92,10 @@ elif args.simulator and args.type == 'unstructured':
         files = { 'file': generated_file }
         response = requests.post(url, files=files, data=data)
 
-        print(f'Response status code: {response.status_code} for file: {file_name}')
-        message = response.json()['message']
-        print(f'Response message: {message}')
+        if response.status_code != 200:
+            print(f'Response status code: {response.status_code} for file: {file_name}')
+            message = response.json()['message']
+            print(f'Response message: {message}')
 
 else:
     print('Use simulator flag -s or provide either relative path to file or directory, which contains files for upload. \n' + \
