@@ -60,6 +60,8 @@ args = parser.parse_args()
 url = args.url
 data_type = args.type
 
+counter = 0
+
 data = create_request_body(args) if data_type == 'unstructured' else {}
 file_field_name = 'file' if data_type == 'unstructured' else 'sql_dump'
 
@@ -79,8 +81,13 @@ elif args.directory:
     else:
         files_names = os.listdir(directory)
         for file_name in files_names:
+            if counter % 1000 == 0:
+                print(f'{counter} files were send.')
+
             file_relative_path = f'{directory}{file_name}'
             send_file(file_relative_path, url, file_field_name, data)
+
+            counter +=1 
 
 elif args.simulator and args.type == 'unstructured':
     for i in range(args.simulator_rounds):
