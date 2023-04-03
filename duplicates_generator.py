@@ -17,7 +17,6 @@ files_data = []
 
 files = os.listdir(folder_relative_path)
 for filename in files:
-    print(filename)
     with open(f'{folder_relative_path}/{filename}', 'r') as file:
         files_data.append(file.read())
 
